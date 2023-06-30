@@ -4,12 +4,13 @@ This Python script generates a PowerShell Process Injection script with AES encr
 ## Disclaimer
 This repository is for educational purposes only. Do not use on any server or endpoints without authorization. I am not responsible for any damages you may cause. Use it at your own discretion.
 
-Install requirements:
+
+
+## Simple Usage:
+Let's start with installing the required libraries:
 ```python
 pip3 install -r requirements.txt
 ```
-
-## Simple Usage:
 ```bash
 python3 phantasmalPS.py -h
 ```
