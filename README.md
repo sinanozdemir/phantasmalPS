@@ -37,3 +37,8 @@ Now, transfer the PowerShell script to a Windows machine and get a shell back:
 ![Reverse Shell](Images/AV-evasion.png)
 
 Thank you
+
+## To-Do
+- Add Amsi bypass
+- Add more injection techniques
+- Add more payload encryption techniques
