@@ -5,6 +5,15 @@ import os
 import sys
 import argparse
 
+print(r"""
+         _                    _                                _   ___   ___ 
+  _ __  | |_    __ _   _ _   | |_   __ _   ___  _ __    __ _  | | | _ \ / __|
+ | '_ \ | ' \  / _` | | ' \  |  _| / _` | (_-< | '  \  / _` | | | |  _/ \__ \
+ | .__/ |_||_| \__,_| |_||_|  \__| \__,_| /__/ |_|_|_| \__,_| |_| |_|   |___/
+ |_|                                                                         
+ 
+ """)
+
 def create_key():
     key = os.urandom(16)  # 16 bytes for AES-128
     cipher = AES.new(key, AES.MODE_ECB)
